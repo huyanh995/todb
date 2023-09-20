@@ -9,4 +9,4 @@ CREATE TABLE cse532.collision (
     unique_key                      INTEGER NOT NULL PRIMARY KEY, -- assign as primary key and not null
     vehicle_type_code_1             VARCHAR(200),
     vehicle_type_code_2             VARCHAR(200)
-)
+);
