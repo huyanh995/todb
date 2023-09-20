@@ -1,4 +1,4 @@
-LOAD FROM "/home/huyanh/todb/hw1/NYPD_Motor_Vehicle_Collisions2017.csv"
+LOAD FROM "/home/huyanh/todb/hw1/data/NYPD_Motor_Vehicle_Collisions2017.csv"
 OF DEL
 METHOD P (
     1, 2, 4, 5, 6, 19, 20, 24, 25, 26
