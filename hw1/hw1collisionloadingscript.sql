@@ -1,9 +1,10 @@
-LOAD FROM "/home/huyanh/todb/hw1/data/NYPD_Motor_Vehicle_Collisions2017.csv"
+IMPORT FROM "/home/huyanh/todb/hw1/data/NYPD_Motor_Vehicle_Collisions2017.csv"
 OF DEL
 METHOD P (
     1, 2, 4, 5, 6, 19, 20, 24, 25, 26
 )
-MESSAGES "/home/dbhuyanh/msg/loadmsg.txt"
+SKIPCOUNT 1
+-- MESSAGES "/home/dbhuyanh/msg/loadmsg.txt" -- DataGrip can display the error in console already
 INSERT INTO cse532.collision (
 --     TO_DATE(date, 'MM/DD/YYYY'),
     date,
