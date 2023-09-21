@@ -1,19 +1,19 @@
 -- Method: CTE
-WITH SUMMARY_COLLISION AS (
+WITH summary_collision AS (
     SELECT
-        HOUR(TIME) AS HOUR,
-        MONTH(DATE) AS MONTH,
-        COUNT(*) as COLLISION_COUNTS
+        HOUR(time) AS hour,
+        MONTH(date) AS month,
+        COUNT(*) as collision_count
     FROM cse532.COLLISION
     GROUP BY CUBE (HOUR(TIME), MONTH(DATE)) -- Should group by hour, month, and hour and month
     -- GROUP BY GROUPING SETS (HOUR(TIME), MONTH(DATE)) -- This one should be more suitable
 )
 SELECT
-    HOUR,
-    COLLISION_COUNTS
-FROM SUMMARY_COLLISION
-WHERE MONTH IS NULL AND HOUR IS NOT NULL
-ORDER BY COLLISION_COUNTS DESC
+    hour,
+    collision_count
+FROM summary_collision
+WHERE month IS NULL AND hour IS NOT NULL
+ORDER BY collision_count DESC
 LIMIT 1;
 
 
