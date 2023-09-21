@@ -8,7 +8,6 @@ WITH SUMMARY_COLLISION AS (
     GROUP BY CUBE (HOUR(TIME), MONTH(DATE)) -- Should group by hour, month, and hour and month
     -- GROUP BY GROUPING SETS (HOUR(TIME), MONTH(DATE)) -- This one should be more suitable
 )
-EXPORT /Users/huyanh/Documents/todb/hw1/readme.txt TO OF DEL
 SELECT
     HOUR,
     COLLISION_COUNTS
