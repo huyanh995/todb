@@ -1,0 +1,21 @@
+-- Method: CTE
+WITH SUMMARY_COLLISION AS (
+    SELECT
+        HOUR(TIME) AS HOUR,
+        MONTH(DATE) AS MONTH,
+        COUNT(*) as COLLISION_COUNTS
+    FROM cse532.COLLISION
+    GROUP BY CUBE (HOUR(TIME), MONTH(DATE)) -- Should group by hour, month, and hour and month
+    -- GROUP BY GROUPING SETS (HOUR(TIME), MONTH(DATE)) -- This one should be more suitable
+)
+EXPORT /Users/huyanh/Documents/todb/hw1/readme.txt TO OF DEL
+SELECT
+    HOUR,
+    COLLISION_COUNTS
+FROM SUMMARY_COLLISION
+WHERE MONTH IS NULL AND HOUR IS NOT NULL
+ORDER BY COLLISION_COUNTS DESC
+LIMIT 1;
+
+
+
