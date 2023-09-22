@@ -32,3 +32,7 @@ INSERT INTO cse532.collision_all (
 )
 
 -- Add Indexing
+CREATE INDEX
+    idx_year_month
+ON cse532.collision_all(MONTH(date), YEAR(date))
+;
