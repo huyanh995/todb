@@ -38,3 +38,5 @@ GROUP BY
     result.latitude,
     result.longitude;
 
+git filter-branch --index-filter "git rm --cached --ignore-unmatch /Users/huyanh/Documents/todb/hw1/data/Motor_Vehicle_Collisions_-_Crashes.csv" --prune-empty -f -- --all
+
