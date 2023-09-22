@@ -11,7 +11,6 @@ CREATE TABLE cse532.collision_all (
     vehicle_type_code_1             VARCHAR(200),
     vehicle_type_code_2             VARCHAR(200)
 );
-
 -- Load data into it
 LOAD FROM "/home/huyanh/todb/hw1/data/Motor_Vehicle_Collisions_-_Crashes.csv"
 OF DEL
@@ -29,10 +28,9 @@ INSERT INTO cse532.collision_all (
     unique_key,
     vehicle_type_code_1,
     vehicle_type_code_2
-)
+);
 
 -- Add Indexing
 CREATE INDEX
     idx_year_month
-ON cse532.collision_all(MONTH(date), YEAR(date))
-;
+ON cse532.collision_all(MONTH(date), YEAR(date));
