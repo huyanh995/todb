@@ -1,0 +1,10 @@
+3b For zip codes with top 10 populations, find if any of them has collision count among top 10 counts too
+
++--------+
+|ZIP_CODE|
++--------+
+|11236   |
+|11234   |
+|11226   |
+|11385   |
++--------+

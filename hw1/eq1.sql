@@ -1,3 +1,25 @@
+-- Method 1: CTE
+WITH summary_collision AS (
+    SELECT
+        HOUR(time) AS hour,
+        MONTH(date) AS month,
+        YEAR(date) as year,
+        COUNT(*) as collision_count
+    FROM cse532.collision
+    GROUP BY CUBE (HOUR(TIME), MONTH(DATE), YEAR(date))
+)
+SELECT
+    hour,
+    collision_count
+FROM summary_collision
+WHERE
+    hour IS NOT NULL
+    AND month IS NULL
+    AND year IS NULL
+ORDER BY collision_count DESC
+LIMIT 1;
+
+-- Method 2: "Temporary" table -> multiple queries
 CREATE TABLE cse532.olap_cube_all AS (
     -- Temporary table should be better but I encountered an error regarding page size 4K authorization
     -- Materized view is another option but complicated to me now
@@ -56,3 +78,5 @@ WHERE
 ORDER BY collision_count DESC
 LIMIT 1
 ;
+
+DROP TABLE cse532.olap_cube_all;

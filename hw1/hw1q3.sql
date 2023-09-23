@@ -16,25 +16,35 @@ WITH coll_location AS (
 ),
 result AS (
     -- Then, get all zipcodes correspond with 10 (latitude, longitude)
+    -- Note: it should be the desired result but I put it in the CTE
+    -- for aggregating zipcodes later
     SELECT DISTINCT
-        coll.zip_code,
         coll_location.latitude,
-        coll_location.longitude
+        coll_location.longitude,
+        coll.zip_code
     FROM cse532.collision AS coll
     JOIN coll_location
     ON coll.longitude = coll_location.longitude AND
        coll.latitude = coll_location.latitude
     WHERE coll.zip_code IS NOT NULL
 )
--- (Just for displaying/ Optional)
--- Last, group them together in case one location has multiple zipcodes.
 SELECT
-    LISTAGG(result.zip_code, ',') WITHIN GROUP (ORDER BY result.zip_code) AS zipcode_list,
-    result.latitude,
-    result.longitude
-FROM
-    result
-GROUP BY
-    result.latitude,
-    result.longitude;
+    *
+FROM result
+;
+/*
+(Optional) comment above block and uncomment below block
+to aggregate multiple zipcodes for one location
+*/
+
+-- SELECT
+--     LISTAGG(result.zip_code, ',') WITHIN GROUP (ORDER BY result.zip_code) AS zipcodes,
+--     result.latitude,
+--     result.longitude
+-- FROM
+--     result
+-- GROUP BY
+--     result.latitude,
+--     result.longitude
+-- ;
 
