@@ -19,10 +19,10 @@ sum_zip AS(
 )
 SELECT
     sum_collision.zip_code
---     ,sum_collision.collision_count
---     ,sum_collision.collision_rank
---     ,sum_zip.sum_pop as population
---     ,sum_zip.population_rank
+    ,sum_collision.collision_count
+    ,sum_collision.collision_rank
+    ,sum_zip.sum_pop as population
+    ,sum_zip.population_rank
 FROM
     sum_collision JOIN sum_zip
     ON sum_collision.zip_code = sum_zip.zip
@@ -37,7 +37,7 @@ WITH coll_location AS (
     SELECT
         latitude,
         longitude,
-        COUNT(*) AS coll_count
+        COUNT(*) AS collision_count
     FROM cse532.collision_all
     WHERE
         -- Exclude all records with NULL for latitude, longitude, zipcode
@@ -45,7 +45,7 @@ WITH coll_location AS (
         latitude IS NOT NULL AND
         longitude IS NOT NULL
     GROUP BY latitude, longitude
-    ORDER BY coll_count DESC
+    ORDER BY collision_count DESC
     LIMIT 10
 ),
 result AS (
@@ -55,7 +55,7 @@ result AS (
     SELECT DISTINCT
         coll_location.latitude,
         coll_location.longitude,
-        coll_location.coll_count,
+        coll_location.collision_count,
         coll.zip_code
     FROM cse532.collision_all AS coll
     JOIN coll_location
@@ -64,24 +64,24 @@ result AS (
     WHERE coll.zip_code IS NOT NULL
 
 )
-SELECT
-    *
-FROM result
-ORDER BY result.coll_count DESC -- Just for nicely display
-;
+-- SELECT
+--     *
+-- FROM result
+-- ORDER BY result.coll_count DESC -- Just for nicely display
+-- ;
 /*
 (Optional) comment above block and uncomment below block
 to aggregate multiple zipcodes for one location
 */
--- SELECT
---     result.latitude,
---     result.longitude,
---     AVG(result.coll_count) as collision_count, -- Should be the same since duplicated entries
---     LISTAGG(result.zip_code, ',') WITHIN GROUP (ORDER BY result.zip_code) AS zipcodes
--- FROM
---     result
--- GROUP BY
---     result.latitude,
---     result.longitude
--- ORDER BY coll_count DESC
--- ;
+SELECT
+    result.latitude,
+    result.longitude,
+    AVG(result.collision_count) as collision_count, -- Should be the same since duplicated entries
+    LISTAGG(result.zip_code, ',') WITHIN GROUP (ORDER BY result.zip_code) AS zipcodes
+FROM
+    result
+GROUP BY
+    result.latitude,
+    result.longitude
+ORDER BY collision_count ASC
+;

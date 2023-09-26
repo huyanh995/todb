@@ -13,7 +13,7 @@ CREATE TABLE cse532.collision_all (
 );
 
 -- Load data into it
-LOAD FROM "/home/huyanh/todb/hw1/data/Motor_Vehicle_Collisions_-_Crashes.csv"
+LOAD FROM "./data/Motor_Vehicle_Collisions_-_Crashes.csv"
 OF DEL
 METHOD P (
     1, 2, 4, 5, 6, 19, 20, 24, 25, 26
