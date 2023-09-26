@@ -2,27 +2,33 @@
 WITH sum_collision AS(
     SELECT
         zip_code,
-        COUNT(*) as collision_count
+        COUNT(*) as collision_count,
+        RANK() OVER (ORDER BY COUNT(*) DESC) AS collision_rank
     FROM cse532.collision_all
-    WHERE zip_code IS NOT NULL
+    WHERE
+        zip_code IS NOT NULL
     GROUP BY zip_code
-    ORDER BY collision_count DESC
-    LIMIT 10
 ),
 sum_zip AS(
     SELECT
         zip,
-        SUM(population) as sum_pop
+        SUM(population) as sum_pop,
+        RANK() OVER (ORDER BY SUM(population) DESC) as population_rank
     FROM cse532.zipcensustable
     GROUP BY zip
-    ORDER BY sum_pop DESC
-    LIMIT 10
 )
 SELECT
     sum_collision.zip_code
+--     ,sum_collision.collision_count
+--     ,sum_collision.collision_rank
+--     ,sum_zip.sum_pop as population
+--     ,sum_zip.population_rank
 FROM
     sum_collision JOIN sum_zip
     ON sum_collision.zip_code = sum_zip.zip
+WHERE
+    sum_collision.collision_rank <= 10
+    AND sum_zip.population_rank <= 10
 ;
 
 -- Rerun q3
@@ -44,25 +50,38 @@ WITH coll_location AS (
 ),
 result AS (
     -- Then, get all zipcodes correspond with 10 (latitude, longitude)
+    -- Note: it should be the desired result but I put it in the CTE
+    -- for aggregating zipcodes later
     SELECT DISTINCT
-        coll.zip_code,
         coll_location.latitude,
-        coll_location.longitude
+        coll_location.longitude,
+        coll_location.coll_count,
+        coll.zip_code
     FROM cse532.collision_all AS coll
     JOIN coll_location
     ON coll.longitude = coll_location.longitude AND
        coll.latitude = coll_location.latitude
     WHERE coll.zip_code IS NOT NULL
+
 )
--- (Just for displaying/ Optional)
--- Last, group them together in case one location has multiple zipcodes.
 SELECT
-    LISTAGG(result.zip_code, ',') WITHIN GROUP (ORDER BY result.zip_code) AS zipcodes,
-    result.latitude,
-    result.longitude
-FROM
-    result
-GROUP BY
-    result.latitude,
-    result.longitude
+    *
+FROM result
+ORDER BY result.coll_count DESC -- Just for nicely display
 ;
+/*
+(Optional) comment above block and uncomment below block
+to aggregate multiple zipcodes for one location
+*/
+-- SELECT
+--     result.latitude,
+--     result.longitude,
+--     AVG(result.coll_count) as collision_count, -- Should be the same since duplicated entries
+--     LISTAGG(result.zip_code, ',') WITHIN GROUP (ORDER BY result.zip_code) AS zipcodes
+-- FROM
+--     result
+-- GROUP BY
+--     result.latitude,
+--     result.longitude
+-- ORDER BY coll_count DESC
+-- ;

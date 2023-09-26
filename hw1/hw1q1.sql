@@ -1,4 +1,4 @@
--- Method 1: CTE
+-- Method 1: Using CTE
 WITH summary_collision AS (
     SELECT
         HOUR(time) AS hour,
@@ -7,6 +7,35 @@ WITH summary_collision AS (
     FROM cse532.collision
     GROUP BY CUBE (HOUR(TIME), MONTH(DATE))
 )
+SELECT
+    *
+FROM cse532.summary_collision
+-- Additional condition to filter if needed
+/*
+WHERE
+    (hour IS NULL AND month IS NOT NULL)
+    OR (month IS NULL AND hour IS NOT NULL)
+*/
+;
+
+-- Method 2: Using view for multiple queries on CUBE -> Including identify hour query
+--              it is the same as writing the identical CTE twice, but easier to edit.
+/*
+CREATE VIEW summary_collision AS (
+    SELECT
+        HOUR(time) AS hour,
+        MONTH(date) AS month,
+        COUNT(*) as collision_count
+    FROM cse532.collision
+    GROUP BY CUBE (HOUR(TIME), MONTH(DATE))
+);
+-- Find hourly (24 hours) and monthly (12 months) counts of collision
+SELECT
+    *
+FROM cse532.summary_collision
+;
+
+Extra query to find hour with peak of collision
 SELECT
     hour,
     collision_count
@@ -17,50 +46,5 @@ WHERE
 ORDER BY collision_count DESC
 LIMIT 1;
 
--- Method 2: "Temporary" table -> multiple queries
-CREATE TABLE cse532.olap_cube AS (
-    -- Temporary table should be better but I encountered an error regarding page size 4K authorization
-    -- Materized view is another option but complicated to me now
-    SELECT
-        HOUR(time) AS hour,
-        MONTH(date) AS month,
-        COUNT(*) as collision_count
-    FROM cse532.collision
-    GROUP BY CUBE (HOUR(time), MONTH(date))
-) WITH DATA;
-
--- Hourly collisions
-SELECT
-    hour,
-    collision_count
-FROM cse532.olap_cube
-WHERE
-    hour IS NOT NULL
-    AND month IS NULL
-;
-
--- Monthly collisions
-SELECT
-    month,
-    collision_count
-FROM cse532.olap_cube
-WHERE
-    hour IS NULL
-    AND month IS NOT NULL
-;
-
--- Find peak collisions over the years
-SELECT
-    hour,
-    collision_count
-FROM cse532.olap_cube
-WHERE
-    hour IS NOT NULL
-    AND month IS NULL
-ORDER BY collision_count DESC
-LIMIT 1
-;
-
-DROP TABLE cse532.olap_cube;
-
-
+DROP VIEW summary_collision; -- Drop view to run multiple times
+*/
