@@ -1,3 +1,9 @@
 *.csv
 .DS_Store
 *.zip
+*.cpg
+*.dbf
+*.prj
+*.shp
+*.shp*
+*.shx
