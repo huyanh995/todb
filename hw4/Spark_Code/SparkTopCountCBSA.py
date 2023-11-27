@@ -57,7 +57,7 @@ top5_CBSA_RDD.persist() # Cache here for answering two questions without re-comp
 # Get the all years count for each top5 CBSA
 top5_CBSA_all_years = (top5_CBSA_RDD.map(lambda x: (x[0][1], x[1]))     # <top5_CBSA, 1>
                                     .reduceByKey(lambda a, b: a + b)    # <top5_CBSA, all_years_count>
-                                    # .collect()
+                                    .repartition(5)
                         )
 
 # Get the year with minimum count for each CBSA
@@ -66,8 +66,7 @@ top5_CBSA_all_years = (top5_CBSA_RDD.map(lambda x: (x[0][1], x[1]))     # <top5_
 top5_CBSA_min_year = (top5_CBSA_RDD.reduceByKey(lambda a, b: a + b)             # <(year, top5_CBSA), yearly_count>
                                     .map(lambda x: (x[0][1], (x[1], x[0][0])))  # <top5_CBSA, (yearly_count, year)>
                                     .reduceByKey(lambda a, b: min(a, b))        # <top5_CBSA, (min_yearly_count, year)>
-                                    # .map(lambda x: (x[0], x[1][1]))             # <top5_CBSA, min_yearly_count>
-                                    # .collect()
+                                    .repartition(5)                             # Reduce the number of partitions to 5
                         )
 
 top5_CBSA_RDD.unpersist()
@@ -81,11 +80,9 @@ with open('/home/huyanh/todb/hw4/results/SparkTopCountCBSA.txt', 'w') as f:
     for line in top5_CBSA_all_years.collect():
         f.write('\t'.join(list(map(str, line))) + '\n')
 
-    # f.write('=' * 20 + '\n')
     f.write('===== Top 5 CBSA w/ min year count ======\n')
     f.write('CBSA\tMin_Year\n')
     for line in top5_CBSA_min_year.collect():
-        # f.write('\t'.join(list(map(str, line))) + '\n')
         f.write('{}\t{}\t{}\n'.format(line[0], line[1][1], line[1][0]))
 
 # >>> DEBUG >>> Time elapsed: 62.246618032455444

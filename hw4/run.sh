@@ -29,4 +29,7 @@ spark-submit SparkTopCountCBSA.py /user/huyanh/cse532-f23/sample.csv SparkTopCou
 hdfs dfs -rm -r /cse532-f23/output/SparkAgeYearCount
 spark-submit SparkAgeYearCount.py /cse532-f23/data/tedsa_puf_2000_2019.csv /cse532-f23/output/SparkAgeYearCount
 
+hdfs dfs -rm -r /cse532-f23/output/SparkTopCountCBSA
 spark-submit SparkTopCountCBSA.py /cse532-f23/data/tedsa_puf_2000_2019.csv /cse532-f23/output/SparkTopCountCBSA
+
+hdfs dfs -get /cse532-f23/output/ /home/huyanh/todb/hw4/results
