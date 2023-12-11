@@ -4,3 +4,12 @@ CREATE TABLE cse532.zipcensustable (
     zip                     INTEGER NOT NULL PRIMARY KEY,
     population              INTEGER
 );
+
+LOAD FROM "./data/zipcodepopulation.csv"
+OF DEL
+INSERT INTO cse532.zipcensustable (
+    rank,
+    population_density,
+    zip,
+    population
+);

@@ -25,5 +25,5 @@ SELECT
     ,zipcode
     ,countycode
     ,county
-    ,db2gse.ST_POINT(latitude, longitude, 1)
+    ,db2gse.ST_POINT(longitude, latitude, 1) -- the GIS standard is (long, lat)
 FROM cse532.FACILITYORIGINAL;
