@@ -22,6 +22,9 @@ Table is designed with two columns:
 Column 1: Author name
 Column 2: Whole XML file
 
+Note that in order to load file, I had to create two *.del file
+to specify *.xml location. That why I uploaded the whole data folder
+
 Q2:
 +-------------------------+
 |AUTHOR                   |
