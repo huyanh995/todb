@@ -4,16 +4,15 @@ WITH CountCoAuthors AS (
         cse532.dblp.author,
         XMLQUERY('
             for $p in $doc/dblpperson/r/*
-            let $coauthors := $p/author[. != "David A. Patterson 0001" and . != "John L. Hennessy"]
+            let $coauthors := $p/author
             let $title := string($p/title)
-            order by count($coauthors) descending
-            return <paper title="{$title}" count="{count($coauthors)}"/>
+            order by count($coauthors) -1 descending
+            return <paper title="{$title}"/>
         ' PASSING dblp.xmlcontent AS "doc") AS title
     FROM
         cse532.dblp
 )
 SELECT
     author,
-    XMLQUERY('string($title[1]/@title)' PASSING title AS "title") AS title,
-    XMLQUERY('string($title[1]/@count)' PASSING title AS "title") AS count
+    XMLQUERY('string($title[1]/@title)' PASSING title AS "title") AS title
 FROM CountCoAuthors;

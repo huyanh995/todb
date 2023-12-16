@@ -36,9 +36,9 @@ Q2:
 +-------------------------+
 
 Q3:
-+------------------+-----------------------------------------------------------------------------------------+-----+
-|AUTHOR            |TITLE                                                                                    |COUNT|
-+------------------+-----------------------------------------------------------------------------------------+-----+
-|David A. Patterson|In-Datacenter Performance Analysis of a Tensor Processing Unit.                          |75   |
-|John L. Hennessy  |Common Bonds: MIPS, HPS, Two-Level Branch Prediction, and Compressed Code RISC Processor.|12   |
-+------------------+-----------------------------------------------------------------------------------------+-----+
++------------------+-----------------------------------------------------------------------------------------+
+|AUTHOR            |TITLE                                                                                    |
++------------------+-----------------------------------------------------------------------------------------+
+|David A. Patterson|In-Datacenter Performance Analysis of a Tensor Processing Unit.                          |
+|John L. Hennessy  |Common Bonds: MIPS, HPS, Two-Level Branch Prediction, and Compressed Code RISC Processor.|
++------------------+-----------------------------------------------------------------------------------------+
